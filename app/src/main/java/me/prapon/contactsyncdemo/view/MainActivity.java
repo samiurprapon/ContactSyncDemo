@@ -1,20 +1,25 @@
-package me.prapon.contactsyncdemo;
+package me.prapon.contactsyncdemo.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import me.prapon.contactsyncdemo.sevices.SyncDatabaseService;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
+import me.prapon.contactsyncdemo.R;
+import me.prapon.contactsyncdemo.viewModel.MainActivityViewModel;
 
 public class MainActivity extends AppCompatActivity {
+
+    private MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startService();
+        viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
     }
 
     public void nextActivity(View view) {
@@ -22,11 +27,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startService() {
-
-        Intent intent = new Intent(this, SyncDatabaseService.class);
-        startService(intent);
-
-    }
 
 }

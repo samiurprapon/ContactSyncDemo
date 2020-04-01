@@ -1,15 +1,17 @@
 package me.prapon.contactsyncdemo.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.design.card.MaterialCardView;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
+
+import java.util.List;
 
 import me.prapon.contactsyncdemo.R;
 import me.prapon.contactsyncdemo.model.Contact;
@@ -17,61 +19,67 @@ import me.prapon.contactsyncdemo.model.Contact;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ViewHolder> {
 
-    ArrayList<Contact> contacts;
-    Context mContext;
+    private Context mContext;
+    private final LayoutInflater layoutInflater;
+    private List<Contact> mContacts;
 
-    public ContactAdapter(Context context, ArrayList<Contact> contacts) {
-        this.mContext = context;
-        this.contacts = contacts;
+    public ContactAdapter(Context context) {
+        layoutInflater = LayoutInflater.from(context);
+        mContext = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item, viewGroup, false);
-        ViewHolder holder = new ViewHolder(view);
+        View view = layoutInflater.inflate(R.layout.contact_item, viewGroup, false);
 
-        return holder;
+        ViewHolder viewHolder = new ViewHolder(view);
+
+        return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Contact contact = contacts.get(position);
+        if(mContacts != null) {
+            Contact contact = mContacts.get(position);
+            viewHolder.mPhone.setText(contact.getPhoneNumber());
+            viewHolder.mName.setText(contact.getName());
 
-        viewHolder.mName.setText(contact.getName());
-        viewHolder.mPhone.setText(contact.getPhone());
+            viewHolder.card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-
-        viewHolder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
+                }
+            });
+        }
     }
 
-
-    @Override
-    public int getItemCount() {
-        return contacts.size();
-    }
-
-    public void updateData(ArrayList<Contact> newContacts) {
-        contacts.clear();
-        contacts.addAll(newContacts);
+    public void setContacts(List<Contact> contacts) {
+        mContacts = contacts;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mName;
-        TextView mPhone;
-        MaterialCardView card;
+    @Override
+    public int getItemCount() {
+        if(mContacts != null) {
+            return mContacts.size();
+        } else {
+            return 0;
+        }
+    }
 
-        public ViewHolder(@NonNull View itemView) {
+
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView mName;
+        private TextView mPhone;
+        private MaterialCardView card;
+
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mName = itemView.findViewById(R.id.tvName);
-            mPhone = itemView.findViewById(R.id.tvPhone);
+
+            mName = itemView.findViewById(R.id.tv_name);
+            mPhone = itemView.findViewById(R.id.tv_phone);
             card = itemView.findViewById(R.id.row_contact);
         }
     }

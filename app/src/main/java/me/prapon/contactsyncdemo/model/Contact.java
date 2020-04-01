@@ -1,40 +1,33 @@
 package me.prapon.contactsyncdemo.model;
 
-import java.io.Serializable;
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class Contact implements Serializable {
-
-    private int id;
+@Entity(tableName = "contacts")
+public class Contact {
+    @NonNull
+    @ColumnInfo(name = "name")
     private String name;
-    private String phone;
 
-    public Contact(int id, String name, String phone) {
-        this.id = id;
+    @NonNull
+    @PrimaryKey
+    @ColumnInfo(name = "phone")
+    private String phoneNumber;
+
+    public Contact(@NonNull String name, @NonNull String phoneNumber) {
         this.name = name;
-        this.phone = phone;
+        this.phoneNumber = phoneNumber;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
+    @NonNull
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
+    @NonNull
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }
